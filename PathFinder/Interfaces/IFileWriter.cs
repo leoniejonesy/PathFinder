@@ -1,7 +1,9 @@
-﻿namespace PathFinder.Interfaces
+﻿using System.Collections.Generic;
+
+namespace PathFinder.Interfaces
 {
     public interface IFileWriter
     {
-        void Write();
+        void Write(List<string> path, string resultFilePath);
     }
 }

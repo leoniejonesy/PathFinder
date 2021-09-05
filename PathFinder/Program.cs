@@ -6,40 +6,34 @@ namespace PathFinder
 {
     class Program
     {
-        private static IFileReader _fileReader;
-        private static IDataParser _dataParser;
-        private static IPathFinder _pathFinder;
-        private static IFileWriter _fileWriter;
+        private static string DictionaryFile;
+        private static string StartWord;
+        private static string EndWord;
+        private static string ResultFile;
 
         static void Main(string[] args)
         {
-            _fileReader = new FileReader();
-            _dataParser = new DataParser();
-
-            string dictionaryFile, startWord, endWord, resultFile;
-
             Console.WriteLine("Enter Dictionary File Name:");
-            dictionaryFile = Console.ReadLine();
+            DictionaryFile = Console.ReadLine();
 
             Console.WriteLine("Enter Start Word:");
-            startWord = Console.ReadLine();
+            StartWord = Console.ReadLine();
 
             Console.WriteLine("Enter End Word:");
-            endWord = Console.ReadLine();
+            EndWord = Console.ReadLine();
 
             Console.WriteLine("Enter Result File Name:");
-            resultFile = Console.ReadLine();
+            ResultFile = Console.ReadLine();
 
-            IEnumerable<string> words =_fileReader.Read(dictionaryFile);
-
-
-            FindPath(dictionaryFile, startWord, endWord, new FileReader(), new DataParser());
+            FindPath(new FileReader(), new DataParser(), new BfsShortestPathFinder(), new FileWriter());
         }
 
-        private static void FindPath(string dictionaryFile, string startWord, string endWord, IFileReader fileReader, IDataParser dataParser)
+        private static void FindPath(IFileReader fileReader, IDataParser dataParser, IPathFinder pathFinder, IFileWriter fileWriter)
         {
-            var words = fileReader.Read(dictionaryFile);
-            var data = dataParser.ParseData(words, startWord, endWord);
+            var words = fileReader.Read(DictionaryFile);
+            var data = dataParser.ParseData(words, StartWord, EndWord);
+            var path = pathFinder.FindPath(data, StartWord, EndWord);
+            fileWriter.Write(path, ResultFile);
         }
     }
 }
