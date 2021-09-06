@@ -1,39 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using PathFinder.Interfaces;
+﻿using PathFinder.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using PathFinder.Configuration;
+using PathFinder.Services;
 
 namespace PathFinder
 {
-    class Program
+    /// <summary>
+    /// Path finder designed to read a file and parse a list of words
+    /// then find a path from a given start word and end word and write to file
+    /// </summary>
+    static class Program
     {
-        private static string DictionaryFile;
-        private static string StartWord;
-        private static string EndWord;
-        private static string ResultFile;
-
         static void Main(string[] args)
         {
-            Console.WriteLine("Enter Dictionary File Name:");
-            DictionaryFile = Console.ReadLine();
-
-            Console.WriteLine("Enter Start Word:");
-            StartWord = Console.ReadLine();
-
-            Console.WriteLine("Enter End Word:");
-            EndWord = Console.ReadLine();
-
-            Console.WriteLine("Enter Result File Name:");
-            ResultFile = Console.ReadLine();
-
-            FindPath(new FileReader(), new DataParser(), new BfsShortestPathFinder(), new FileWriter());
-        }
-
-        private static void FindPath(IFileReader fileReader, IDataParser dataParser, IPathFinder pathFinder, IFileWriter fileWriter)
-        {
-            var words = fileReader.Read(DictionaryFile);
-            var data = dataParser.ParseData(words, StartWord, EndWord);
-            var path = pathFinder.FindPath(data, StartWord, EndWord);
-            fileWriter.Write(path, ResultFile);
+            var host = Host.CreateDefaultBuilder()
+                .ConfigureAppConfiguration(app =>
+                {
+                    app.AddJsonFile("appsettings.json");
+                })
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.AddHostedService<PathFinderHostedService>();
+                    services.AddScoped<IFileReader, FileReader>();
+                    services.AddScoped<IDataParser, DataParser>();
+                    services.AddScoped<IPathFinder, BfsShortestPathFinder>();
+                    services.AddScoped<IFileWriter, FileWriter>();
+                    
+                    services.AddOptions<FileReaderConfiguration>().Bind(hostContext.Configuration.GetSection("FileReaderConfig"));
+                })
+                .RunConsoleAsync();
         }
     }
 }

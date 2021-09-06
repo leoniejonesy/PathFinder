@@ -2,8 +2,11 @@
 using System.Linq;
 using PathFinder.Interfaces;
 
-namespace PathFinder
+namespace PathFinder.Services
 {
+    /// <summary>
+    /// Data parser that takes a list of words and returns an adjacency list 
+    /// </summary>
     public class DataParser : IDataParser
     {
         private List<string> _values;

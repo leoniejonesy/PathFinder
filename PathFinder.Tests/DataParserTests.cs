@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using PathFinder.Services;
 
 namespace PathFinder.Tests
 {
@@ -18,8 +19,6 @@ namespace PathFinder.Tests
         [Test]
         public void ParseData_WithListOfValues_ShouldReturnDictionaryWithLinkedValues()
         {
-            var values = new List<string> {"Spin", "Spit", "Spat", "Spot", "Span", "Soon", "Swan"};
-            
             var sut = new DataParser();
 
             var result = sut.ParseData(_values, "Test", "Test");

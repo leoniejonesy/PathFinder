@@ -2,14 +2,20 @@
 using System.Linq;
 using PathFinder.Interfaces;
 
-namespace PathFinder
+namespace PathFinder.Services
 {
+    /// <summary>
+    /// Shortest Path Finder using Breadth-First Search
+    /// </summary>
     public class BfsShortestPathFinder : IPathFinder
     {
         public List<string> FindPath(Dictionary<string, List<string>> data, string startValue, string endValue)
         {
             var visitedNodes = new Dictionary<string, string>();
 
+            if (data.All(x => x.Key != startValue))
+                return new List<string>();
+            
             var queue = new Queue<string>();
             queue.Enqueue(startValue);
 
