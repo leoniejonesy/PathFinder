@@ -20,9 +20,11 @@ namespace PathFinder.Services
         }
         public IEnumerable<string> Read(string dictionaryFile)
         {
-            var words = File.ReadAllLines(dictionaryFile.ToString()).ToList();
+            if (!File.Exists(dictionaryFile))
+                throw new FileNotFoundException("File not found");
+            
+            var words = File.ReadAllLines(dictionaryFile).ToList();
 
-            // TODO: put tests around this
             return words.Where(x => x.Length == int.Parse(_fileReaderSettings.Value.MaxWordLength)).Select(x => x.ToLowerInvariant()).Distinct();
         }
     }

@@ -18,4 +18,10 @@
       <ProjectReference Include="..\PathFinder\PathFinder.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="TestData\words-english-test-data.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
