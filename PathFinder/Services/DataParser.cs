@@ -11,7 +11,7 @@ namespace PathFinder.Services
     {
         private List<string> _values;
 
-        public Dictionary<string, List<string>> ParseData(IEnumerable<string> values, string startValue, string endValue)
+        public Dictionary<string, List<string>> ParseData(IEnumerable<string> values)
         {
             _values = values.ToList();
 
@@ -30,10 +30,6 @@ namespace PathFinder.Services
                 }
                 
                 nodeList.Add(value1, linkedValues);
-
-                // if the startValue is directly linked to endValue then break out
-                if (value1 == startValue && linkedValues.Any(x => x == endValue))
-                    break;
             }
 
             return nodeList;

@@ -15,7 +15,7 @@ namespace PathFinder
     {
         static void Main(string[] args)
         {
-            var host = Host.CreateDefaultBuilder()
+            var host = Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(app =>
                 {
                     app.AddJsonFile("appsettings.json");

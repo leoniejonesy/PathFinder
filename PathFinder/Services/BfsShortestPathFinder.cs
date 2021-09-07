@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PathFinder.Interfaces;
 
@@ -14,7 +15,9 @@ namespace PathFinder.Services
             var visitedNodes = new Dictionary<string, string>();
 
             if (data.All(x => x.Key != startValue))
-                return new List<string>();
+                throw new ArgumentException("File does not contain specified start word");
+            if (data.All(x => x.Key != endValue))
+                throw new ArgumentException("File does not contain specified end word");
             
             var queue = new Queue<string>();
             queue.Enqueue(startValue);

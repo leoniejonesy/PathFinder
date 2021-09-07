@@ -21,7 +21,7 @@ namespace PathFinder.Tests
         {
             var sut = new DataParser();
 
-            var result = sut.ParseData(_values, "Test", "Test");
+            var result = sut.ParseData(_values);
             
             Assert.That(result[_values[0]].Count(), Is.EqualTo(2));
             Assert.That(result[_values[1]].Count(), Is.EqualTo(3));
@@ -30,16 +30,6 @@ namespace PathFinder.Tests
             Assert.That(result[_values[4]].Count(), Is.EqualTo(3));
             Assert.That(result[_values[5]].Count(), Is.EqualTo(0));
             Assert.That(result[_values[5]].Count(), Is.EqualTo(0));
-        }
-
-        [Test]
-        public void ParseData_WithListOfValues_ShouldStopAddingToDictionaryIfStartWordIsLinkedToEndWord()
-        {
-            var sut = new DataParser();
-
-            var result = sut.ParseData(_values, "Spin", "Span");
-            
-            Assert.That(result.Count(), Is.EqualTo(1));
         }
     }
 }

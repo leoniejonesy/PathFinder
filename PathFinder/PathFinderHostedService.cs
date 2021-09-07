@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using PathFinder.Interfaces;
+using System.CommandLine;
+using System.CommandLine.Invocation;
 
 namespace PathFinder
 {
@@ -22,29 +24,46 @@ namespace PathFinder
         }
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            Console.WriteLine("Enter Dictionary File Name:");
-            var dictionaryFile = Console.ReadLine();
-
-            Console.WriteLine("Enter Start Word:");
-            var startWord = Console.ReadLine();
-
-            Console.WriteLine("Enter End Word:");
-            var endWord = Console.ReadLine();
-
-            Console.WriteLine("Enter Result File Name:");
-            var resultFile = Console.ReadLine();
-            
-            var words = _fileReader.Read(dictionaryFile);
-            var data = _dataParser.ParseData(words, startWord, endWord);
-            var path = _pathFinder.FindPath(data, startWord, endWord);
-            _fileWriter.Write(path, resultFile);
-
-            return default;
+            ParseArguments();
+            return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
+        }
+
+        private int ParseArguments()
+        {
+            var args = Environment.GetCommandLineArgs();
+
+            var rootCommand = new RootCommand
+            {
+                new Option<string>(
+                    "--DictionaryFile",
+                    description: "Specify the Dictionary File"),
+                new Option<string>(
+                    "--StartWord",
+                    "Specify the Start Word\n"),
+                new Option<string>(
+                    "--EndWord",
+                    "Specify the End Word\n"),
+                new Option<string>(
+                    "--ResultFile",
+                    "Specify the Result File")
+            };
+
+            rootCommand.Description = "Console App to find the path between two words given reference to a file containing a list of words";
+            rootCommand.Handler = CommandHandler.Create<string, string, string, string>(Execute);
+            return rootCommand.InvokeAsync(args).Result;
+        }
+
+        private void Execute(string dictionaryFile, string startWord, string endWord, string resultFile)
+        {
+            var words = _fileReader.Read(dictionaryFile);
+            var data = _dataParser.ParseData(words);
+            var path = _pathFinder.FindPath(data, startWord, endWord);
+            _fileWriter.Write(path, resultFile);
         }
     }
 }

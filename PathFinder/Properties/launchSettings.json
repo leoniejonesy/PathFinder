@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PathFinder": {
+      "commandName": "Project",
+      "commandLineArgs": "--DictionaryFile words-english.txt --StartWord amos --EndWord spot --ResultFile result.txt"
+    }
+  }
+}

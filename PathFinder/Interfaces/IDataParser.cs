@@ -4,6 +4,6 @@ namespace PathFinder.Interfaces
 {
     public interface IDataParser
     {
-        Dictionary<string, List<string>> ParseData(IEnumerable<string> values, string startValue, string endValue);
+        Dictionary<string, List<string>> ParseData(IEnumerable<string> values);
     }
 }
