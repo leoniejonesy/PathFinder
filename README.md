@@ -21,7 +21,7 @@ I chose to use BFS in this case, largely due to the fact that I may not have to 
 
 I then needed to decide how best to structure the data, in a way that would suit a BFS.  I did some further research on linked data structures and found that an adjacency list would be the best fit. 
 
-This is when I started thinking about how I would structure my project.  I knew that I would need to split the program into phases:
+This is when I started thinking about how I would structure my project.  I knew that I would need to split the program into phases, of which could be tested in isolation:
 1. Read a file
 2. Represent the data
 3. Find the shortest path
