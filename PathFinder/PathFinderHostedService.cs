@@ -14,13 +14,15 @@ namespace PathFinder
         private readonly IDataParser _dataParser;
         private readonly IPathFinder _pathFinder;
         private readonly IFileWriter _fileWriter;
+        private readonly IValidator _validator;
 
-        public PathFinderHostedService(IFileReader fileReader, IDataParser dataParser, IPathFinder pathFinder, IFileWriter fileWriter)
+        public PathFinderHostedService(IFileReader fileReader, IDataParser dataParser, IPathFinder pathFinder, IFileWriter fileWriter, IValidator validator)
         {
             _fileReader = fileReader;
             _dataParser = dataParser;
             _pathFinder = pathFinder;
             _fileWriter = fileWriter;
+            _validator = validator;
         }
         public Task StartAsync(CancellationToken cancellationToken)
         {
@@ -60,10 +62,17 @@ namespace PathFinder
 
         private void Execute(string dictionaryFile, string startWord, string endWord, string resultFile)
         {
-            var words = _fileReader.Read(dictionaryFile);
-            var data = _dataParser.ParseData(words);
-            var path = _pathFinder.FindPath(data, startWord, endWord);
-            _fileWriter.Write(path, resultFile);
+            if (_validator.Valid(dictionaryFile, startWord, endWord, resultFile))
+            {
+                var words = _fileReader.Read(dictionaryFile);
+                var data = _dataParser.ParseData(words);
+                var path = _pathFinder.FindPath(data, startWord, endWord);
+                _fileWriter.Write(path, resultFile);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid command line arguments");
+            }
         }
     }
 }

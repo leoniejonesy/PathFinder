@@ -27,7 +27,8 @@ namespace PathFinder
                     services.AddScoped<IDataParser, DataParser>();
                     services.AddScoped<IPathFinder, BfsShortestPathFinder>();
                     services.AddScoped<IFileWriter, FileWriter>();
-                    
+                    services.AddScoped<IValidator, Validator>();
+
                     services.AddOptions<FileReaderConfiguration>().Bind(hostContext.Configuration.GetSection("FileReaderConfig"));
                 })
                 .RunConsoleAsync();
